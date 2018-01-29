@@ -1,0 +1,57 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+mainClassName = "com.wuba.gui.ScreenMap"
+sourceCompatibility = 1.6
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'commons-collections:commons-collections:3.2'
+    compile 'org.testng:testng:6.8.13'
+    compile 'log4j:log4j:1.2.17'
+    compile 'com.android.tools.ddms:ddmlib:24.2.3'
+    compile 'org.jetbrains:annotations-java5:15.0'
+    compile files('libs/chimpchat.jar')
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs 'repos'
+        }
+    }
+}
+jar {
+    archiveName = "screen.jar"
+    destinationDir = file(".")
+
+    from {
+        configurations.runtime.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+//    from fileTree(dir: 'minicap')
+    manifest {
+        attributes 'Main-Class': 'com.wuba.gui.ScreenMap'
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}

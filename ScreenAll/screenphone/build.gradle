@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+mainClassName = "com.fansir.screenphone.gui.OnePhoneFrame"
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    compile 'commons-collections:commons-collections:3.2'
+    compile 'org.testng:testng:6.8.13'
+    compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.android.tools.ddms:ddmlib:24.2.3'
+    compile files('libs/chimpchat.jar')
+    compile files('libs/rt.jar')
+}
