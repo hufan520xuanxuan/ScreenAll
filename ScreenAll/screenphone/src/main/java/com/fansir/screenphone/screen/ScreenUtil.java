@@ -44,10 +44,14 @@ public class ScreenUtil implements ScreenSubject {
     private int portNum;
     private String size;
     private Socket socket;
+    int screenWidth; //要显示的屏幕宽度
+    int screenHeight; //要显示的屏幕高度
 
-    public ScreenUtil(IDevice d, int p) {
+    public ScreenUtil(IDevice d, int p, int width, int height) {
         device = d;
         portNum = p;
+        screenWidth = width;
+        screenHeight = height;
         initParam();
     }
 
@@ -126,7 +130,7 @@ public class ScreenUtil implements ScreenSubject {
         public void run() {
             try {
                 final String startCommand = String.format(
-                        SCREEN_START_COMMAND, size, size);
+                        SCREEN_START_COMMAND, size, screenWidth + "x" + screenHeight);
                 // 启动screen服务
                 new Thread(new Runnable() {
                     public void run() {
@@ -203,6 +207,7 @@ public class ScreenUtil implements ScreenSubject {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    //byte[] --> image
                                     Image image = createImageFromByte(finalBytes);
                                     notifyObservers(image);
                                 }

@@ -205,7 +205,7 @@ public class MinicapTest extends JFrame {
 //        });
 
 
-        // pack();
+//         pack();
 
 
     }
