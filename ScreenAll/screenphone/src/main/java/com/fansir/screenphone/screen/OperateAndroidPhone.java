@@ -14,6 +14,14 @@ import java.io.IOException;
  */
 
 public class OperateAndroidPhone {
+    public static String POWER = "KEYCODE_POWER";
+    public static String HOME = "KEYCODE_HOME";
+    public static String BACK = "KEYCODE_BACK";
+    public static String MENU = "KEYCODE_MENU";
+    public static String VOLUP = "KEYCODE_VOLUME_UP";
+    public static String VOLDOWN = "KEYCODE_VOLUME_DOWN";
+
+
     private AdbChimpDevice device;
     private IChimpDevice iChimpDevice;
     private ChimpManager manager;
@@ -57,4 +65,5 @@ public class OperateAndroidPhone {
     public void type(char c) {
         device.type(Character.toString(c));
     }
+
 }

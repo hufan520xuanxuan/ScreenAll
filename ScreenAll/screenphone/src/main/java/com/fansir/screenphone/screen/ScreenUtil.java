@@ -47,11 +47,9 @@ public class ScreenUtil implements ScreenSubject {
     int screenWidth; //要显示的屏幕宽度
     int screenHeight; //要显示的屏幕高度
 
-    public ScreenUtil(IDevice d, int p, int width, int height) {
+    public ScreenUtil(IDevice d, int p) {
         device = d;
         portNum = p;
-        screenWidth = width;
-        screenHeight = height;
         initParam();
     }
 
@@ -98,6 +96,13 @@ public class ScreenUtil implements ScreenSubject {
         observerList.add(observer);
     }
 
+    public void removeObserver(AndroidScreenObserver observer) {
+        int index = observerList.indexOf(observer);
+        if (index != -1) {
+            observerList.remove(observer);
+        }
+    }
+
     /**
      * 通知观察者发生了变化
      *
@@ -113,12 +118,35 @@ public class ScreenUtil implements ScreenSubject {
     /**
      * 开始屏幕监测
      */
-    public void startScreenListener() {
+    public void startScreenListener(int width, int height) {
+        screenWidth = width;
+        screenHeight = height;
         isRunning = true;
         Thread frame = new Thread(new ImageBinaryFrameCollector());
         frame.start();
         Thread convert = new Thread(new ImageConverter());
         convert.start();
+    }
+
+    public void stopScreenListener() {
+        isRunning = false;
+    }
+
+    /**
+     * 当窗口关闭时 需要关闭的操作
+     */
+    public void windowClose() {
+        killProcess("minicap");
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (device != null) {
+            device = null;
+        }
     }
 
     /**
@@ -302,7 +330,7 @@ public class ScreenUtil implements ScreenSubject {
             readBannerBytes += 1;
 
             if (readBannerBytes == bannerLength) {
-                System.out.println(banner.toString());
+                System.out.println("image信息=" + banner.toString());
             }
             return cursor;
         }
@@ -395,6 +423,19 @@ public class ScreenUtil implements ScreenSubject {
             dest = m.replaceAll("");
         }
         return dest;
+    }
+
+    /**
+     * 结束android后台运行的某个进程
+     */
+    public void killProcess(String name) {
+        String psGrep = executeShell("ps |grep " + name);
+        String pidFour = psGrep.substring(5, 9);
+        String resultFour = executeShell("kill " + pidFour);
+        if (!resultFour.equals("")) { //没有成功停止了
+            String pidFive = psGrep.substring(5, 10);
+            executeShell("kill " + pidFive);
+        }
     }
 
 
