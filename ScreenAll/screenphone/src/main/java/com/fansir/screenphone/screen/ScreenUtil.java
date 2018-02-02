@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
  */
 
 public class ScreenUtil implements ScreenSubject {
+
     private String REMOTE_PATH = "/data/local/tmp"; //手机存放文件目录
     private String CPU_COMMAND = "ro.product.cpu.abi"; //手机存放文件目录
     private String SDK_COMMAND = "ro.build.version.sdk"; //手机存放文件目录
@@ -437,6 +438,5 @@ public class ScreenUtil implements ScreenSubject {
             executeShell("kill " + pidFive);
         }
     }
-
 
 }

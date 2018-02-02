@@ -1,10 +1,10 @@
 package com.fansir.screenphone.screen;
 
 import com.android.chimpchat.ChimpManager;
-import com.android.chimpchat.adb.AdbChimpDevice;
 import com.android.chimpchat.core.IChimpDevice;
 import com.android.chimpchat.core.TouchPressType;
 import com.android.ddmlib.IDevice;
+import com.fansir.screenphone.devices.AdbChimpTest;
 
 import java.io.IOException;
 
@@ -21,31 +21,33 @@ public class OperateAndroidPhone {
     public static String VOLUP = "KEYCODE_VOLUME_UP";
     public static String VOLDOWN = "KEYCODE_VOLUME_DOWN";
 
-
-    private AdbChimpDevice device;
+    private AdbChimpTest device;
     private IChimpDevice iChimpDevice;
     private ChimpManager manager;
 
-    public OperateAndroidPhone(IDevice iDevice) {
+    public OperateAndroidPhone(IDevice iDevice, int port) {
         if (device == null) {
-            iChimpDevice = new AdbChimpDevice(iDevice);
-            device = (AdbChimpDevice) iChimpDevice;
+            iChimpDevice = new AdbChimpTest(iDevice, port);
+            device = (AdbChimpTest) iChimpDevice;
             manager = device.getManager();
         }
     }
 
     public void touchDown(int x, int y) {
         try {
+//            System.out.println("shell=" + "touch down " + x + " " + y);
+//            screenUtil.exeShellQuickly("touch down " + x + " " + y);
             manager.touchDown(x, y);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
 
     public void touchUp(int x, int y) {
         try {
+//            screenUtil.exeShellQuickly("touch up " + x + " " + y);
             manager.touchUp(x, y);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
@@ -64,6 +66,11 @@ public class OperateAndroidPhone {
 
     public void type(char c) {
         device.type(Character.toString(c));
+    }
+
+    public void disPose() {
+        device.closeWindow();
+        iChimpDevice.dispose();
     }
 
 }

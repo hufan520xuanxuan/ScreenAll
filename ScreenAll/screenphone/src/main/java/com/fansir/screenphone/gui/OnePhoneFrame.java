@@ -37,41 +37,48 @@ import javax.swing.WindowConstants;
  */
 
 public class OnePhoneFrame extends JFrame {
-    private int width = 360;
-    private int height = 640;
+    private int width = 720 / 2; //720
+    private int height = 1280 / 2; //1280
     private int realWidth; //手机真实宽度
     private int realHeight; //手机真是高度
 
     ScreenUtil screenUtil = null;
     private OperateAndroidPhone oaPhone;
-    private ScreenPanel screenPanel;
-    private final IDevice device;
+    private AdbTools adbTools;
 
     public static void main(String[] args) {
         new OnePhoneFrame();
     }
 
     public OnePhoneFrame() {
-        AdbTools adbTools = new AdbTools();
-        while (adbTools.getDevicesList().length <= 0) { //循环获取当前连接设备信息
 
+        initMainFrame();
+
+        adbTools = new AdbTools();
+        while (adbTools.getDevicesList().length <= 0) { //循环获取当前连接设备信息
+            System.out.println("adbLength=" + adbTools.getDevicesList().length);
         }
-        device = adbTools.getDevicesList()[0];
-        oaPhone = new OperateAndroidPhone(device); //创建操作android手机对象
-        initScreenPanel();
+
+        for (int i = 0; i < adbTools.getDevicesList().length; i++) {
+            int port = 12345 + i;
+            IDevice device = adbTools.getDevicesList()[i];
+            initScreenPanel(device, port, i);
+            oaPhone = new OperateAndroidPhone(device, port); //创建操作android手机对象
+        }
         addMenuBar(); //添加菜单栏
         this.setVisible(true);
     }
 
-    private void initScreenPanel() {
+    private void initMainFrame() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); //获取电脑屏幕尺寸
-        screenPanel = new ScreenPanel(device, this);
-        screenPanel.setBounds(100, 100, dim.height, dim.width);
-        this.getContentPane().add(screenPanel);
-        this.setBounds(100, 100, 800, 800); //设置初始化frame的尺寸
+        this.setBounds(0, 0, dim.width, dim.height);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //点击关闭直接关闭进程操作
+    }
+
+    private void initScreenPanel(IDevice device, int port, int index) {
+        ScreenPanel screenPanel = new ScreenPanel(device, port, index);
+        this.getContentPane().add(screenPanel);
         setPanelMouseListener(screenPanel);
-        pack();
     }
 
     private void addMenuBar() {
@@ -118,6 +125,11 @@ public class OnePhoneFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 oaPhone.press(OperateAndroidPhone.POWER);
+            }
+        });
+        menuItem2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
             }
         });
 
@@ -231,6 +243,7 @@ public class OnePhoneFrame extends JFrame {
             public void windowClosing(WindowEvent windowEvent) {
                 super.windowClosing(windowEvent);
                 screenUtil.windowClose();
+                oaPhone.disPose();
             }
         });
 
@@ -242,11 +255,15 @@ public class OnePhoneFrame extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
+//                screenUtil.exeShellQuickly("touch down " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
+//                screenUtil.exeShellQuickly("input tap " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
                 oaPhone.touchDown((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
+//                screenUtil.exeShellQuickly("touch up " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
+//                screenUtil.exeShellQuickly("input tap " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
                 oaPhone.touchUp((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
             }
 
@@ -264,6 +281,8 @@ public class OnePhoneFrame extends JFrame {
         panel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
+//                screenUtil.exeShellQuickly("touch move " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
+//                screenUtil.exeShellQuickly("input swipe " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
                 oaPhone.touchMove((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
             }
 
@@ -290,10 +309,12 @@ public class OnePhoneFrame extends JFrame {
      */
     class ScreenPanel extends JPanel implements AndroidScreenObserver {
         BufferedImage bufferedImage;
+        int index;
 
         //构造方法
-        public ScreenPanel(IDevice iDevice, OnePhoneFrame frame) {
-            screenUtil = new ScreenUtil(iDevice, 12345);
+        public ScreenPanel(IDevice iDevice, int port, int index) {
+            this.index = index;
+            screenUtil = new ScreenUtil(iDevice, port + 1);
             screenUtil.registerObserver(this);
             screenUtil.startScreenListener(width, height);
         }
@@ -310,9 +331,9 @@ public class OnePhoneFrame extends JFrame {
                 return;
             }
             //因为frame边界也是有尺寸的 所以重新绘制时需要加上frame的边界
-            OnePhoneFrame.this.setSize(width + 15, height + 60);
+//            setSize(width + 15, height + 60);
             graphics.drawImage(bufferedImage, 0, 0, width, height, null);
-            this.setSize(width, height);
+            this.setBounds(0, (index * height) + 20, width, height);
             bufferedImage.flush();
         }
     }
