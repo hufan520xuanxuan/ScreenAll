@@ -48,7 +48,7 @@ public class ScreenMap {
         public ScreenPanel(IDevice device) {
             MiniCapUtil miniCapUtil = new MiniCapUtil(device, 11111);
             miniCapUtil.registerObserver(this);
-            miniCapUtil.startScreenListener();
+            miniCapUtil.startScreenListener(phoneW, phoneH);
         }
 
         @Override

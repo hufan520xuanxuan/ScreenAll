@@ -39,3 +39,103 @@
 2018-02-01 10:51:51 INFO  MiniCapUtil:79-size720x1280
 2018-02-01 10:51:51 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
 2018-02-01 10:51:52 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=7330]
+2018-02-02 14:33:08 INFO  class:49-ssstrue
+2018-02-02 14:33:10 INFO  MiniCapUtil:79-size720x1280
+2018-02-02 14:33:10 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
+2018-02-02 14:33:11 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=12446]
+2018-02-02 14:33:14 INFO  MiniCapUtil:79-size720x1280
+2018-02-02 14:33:14 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
+2018-02-02 14:33:15 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=12462]
+2018-02-02 14:43:06 INFO  class:49-ssstrue
+2018-02-02 14:43:08 INFO  MiniCapUtil:79-size720x1280
+2018-02-02 14:43:08 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
+2018-02-02 14:43:09 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=13009]
+2018-02-02 14:43:12 INFO  MiniCapUtil:79-size720x1280
+2018-02-02 14:43:12 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
+2018-02-02 14:43:13 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=13024]
+2018-02-02 15:34:47 INFO  class:49-ssstrue
+2018-02-02 15:34:49 INFO  MiniCapUtil:79-size720x1280
+2018-02-02 15:34:49 INFO  MiniCapUtil:187-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@720x1280/0
+2018-02-02 15:34:50 INFO  MiniCapUtil:199-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=15584]
+2018-02-03 10:21:59 INFO  class:49-ssstrue
+2018-02-03 10:22:01 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:22:01 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:22:02 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35049]
+2018-02-03 10:23:37 INFO  class:49-ssstrue
+2018-02-03 10:23:38 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:23:38 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:23:39 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35134]
+2018-02-03 10:24:15 INFO  class:49-ssstrue
+2018-02-03 10:24:17 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:24:17 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:24:18 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35258]
+2018-02-03 10:24:22 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:24:22 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:24:23 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35272]
+2018-02-03 10:25:05 INFO  class:49-ssstrue
+2018-02-03 10:25:08 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:25:08 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:25:09 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35332]
+2018-02-03 10:25:12 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:25:12 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:25:13 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35343]
+2018-02-03 10:27:56 INFO  class:49-ssstrue
+2018-02-03 10:27:59 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:27:59 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:28:00 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35488]
+2018-02-03 10:28:08 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:28:08 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:28:09 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35505]
+2018-02-03 10:30:48 INFO  class:49-ssstrue
+2018-02-03 10:30:51 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:30:51 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:30:52 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35665]
+2018-02-03 10:31:01 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:31:01 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:31:02 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35683]
+2018-02-03 10:31:49 INFO  class:49-ssstrue
+2018-02-03 10:31:52 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:31:52 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:31:53 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35778]
+2018-02-03 10:32:01 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:32:01 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:32:02 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35798]
+2018-02-03 10:32:57 INFO  class:49-ssstrue
+2018-02-03 10:32:59 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:32:59 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:33:00 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35898]
+2018-02-03 10:33:08 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:33:08 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:33:09 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=35917]
+2018-02-03 10:33:39 INFO  class:49-ssstrue
+2018-02-03 10:33:41 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:33:41 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:33:42 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=35991]
+2018-02-03 10:33:57 INFO  class:49-ssstrue
+2018-02-03 10:33:58 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:33:58 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:33:59 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=36040]
+2018-02-03 10:34:19 INFO  class:49-ssstrue
+2018-02-03 10:34:21 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:34:21 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:34:22 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=36093]
+2018-02-03 10:35:12 INFO  class:49-ssstrue
+2018-02-03 10:35:14 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:35:14 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:35:15 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=36173]
+2018-02-03 10:35:18 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:35:18 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:35:19 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=36189]
+2018-02-03 10:35:23 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:35:23 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:35:24 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1113,localport=36201]
+2018-02-03 10:37:34 INFO  class:49-ssstrue
+2018-02-03 10:37:37 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:37:37 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:37:38 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1111,localport=36332]
+2018-02-03 10:37:41 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:37:41 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:37:42 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1112,localport=36345]
+2018-02-03 10:37:45 INFO  MiniCapUtil:80-size720x1280
+2018-02-03 10:37:45 INFO  MiniCapUtil:190-minicap鏈嶅姟鍣ㄥ惎鍔� : LD_LIBRARY_PATH=/data/local/tmp /data/local/tmp/minicap -P 720x1280@360x640/0
+2018-02-03 10:37:46 INFO  MiniCapUtil:202-socket=Socket[addr=localhost/127.0.0.1,port=1113,localport=36357]

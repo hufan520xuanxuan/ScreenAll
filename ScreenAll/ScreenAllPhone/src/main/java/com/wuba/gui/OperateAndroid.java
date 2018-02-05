@@ -22,11 +22,14 @@ public class OperateAndroid {
     private IChimpDevice chimpDevice;
 
 
-    public OperateAndroid(IDevice dev) {
+    public OperateAndroid(IDevice dev, int port) {
         if (device == null) {
             chimpDevice = new AdbChimpDevice(dev);
             device = (AdbChimpDevice) chimpDevice;
             manager = device.getManager();
+//            chimpDevice = new AdbChimpTest(dev, port);
+//            device = (AdbChimpTest) chimpDevice;
+//            manager = device.getManager();
         }
     }
 

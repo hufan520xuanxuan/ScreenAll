@@ -43,7 +43,7 @@ public class AdbChimpTest implements IChimpDevice {
         this.CreateManager();
     }
 
-    private void CreateManager() {
+    public void CreateManager() {
         this.manager = this.createManager("127.0.0.1", port);
         Preconditions.checkNotNull(this.manager);
     }
@@ -53,6 +53,7 @@ public class AdbChimpTest implements IChimpDevice {
     }
 
     private ChimpManager createManager(String address, int port) {
+
         try {
             this.iDevice.createForward(port, port);
         } catch (TimeoutException e) {
@@ -64,7 +65,7 @@ public class AdbChimpTest implements IChimpDevice {
         }
 
         boolean success = false;
-//        long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         while (true) {
             while (true) {
                 if (!success) {
@@ -84,12 +85,12 @@ public class AdbChimpTest implements IChimpDevice {
                         return null;
                     }
 
-//                    long now = System.currentTimeMillis();
-//                    long diff = now - start;
-//                    if (diff > 5000L) {
-//                        LOG.severe("Timeout while trying to create chimp mananger");
-//                        return null;
-//                    }
+                    long now = System.currentTimeMillis();
+                    long diff = now - start;
+                    if (diff > 2 * 10000) {
+                        LOG.severe("Timeout while trying to create chimp mananger");
+                        return null;
+                    }
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException var15) {
@@ -104,11 +105,18 @@ public class AdbChimpTest implements IChimpDevice {
                     }
                     try {
                         mm = new ChimpManager(monkeySocket);
-
                     } catch (IOException var20) {
                         LOG.log(Level.SEVERE, "Unable to open writer and reader to socket");
                         continue;
                     }
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+
                     try {
 
                         boolean e = mm.wake();
@@ -118,7 +126,6 @@ public class AdbChimpTest implements IChimpDevice {
                             continue;
                         }
 
-//
 //                        boolean e = mm.wake();
 //                        LOG.info("cccccc====" + e);
 //                        if (!e) {
@@ -127,6 +134,7 @@ public class AdbChimpTest implements IChimpDevice {
 //                        mm = new ChimpManager(monkeySocket);
 //                        e = mm.wake();
                     } catch (IOException var22) {
+                        System.out.println("unable to wake up device");
                         LOG.log(Level.FINE, "Unable to wake up device", var22);
                         success = false;
                         continue;
@@ -260,6 +268,7 @@ public class AdbChimpTest implements IChimpDevice {
             if (mm != null) {
                 mm.done();
                 mm.quit();
+                mm.close();
             }
             monkeySocket.close();
         } catch (IOException e) {

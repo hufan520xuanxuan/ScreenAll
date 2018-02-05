@@ -51,6 +51,7 @@ public class MiniCapUtil implements ScreenSubject {
     private String ADB_PULL_COMMAND = "adb -s %s pull %s %s";
     private boolean isRunning = false;
     private String size;
+    int screenWidth, screenHeight;
 
     public MiniCapUtil(IDevice device, int port) {
         d = device;
@@ -61,7 +62,7 @@ public class MiniCapUtil implements ScreenSubject {
     //初始化工具
     private void init() {
         String abi = d.getProperty(ABI_COMMAND);
-        System.out.println("aaaaa"+abi);
+        System.out.println("aaaaa" + abi);
         String sdk = d.getProperty(SDK_COMMAND);
         File mcbin = new File(Constant.getMiniCapBin(), abi + File.separator + MINICAP_BIN);
         File mcso = new File(Constant.getMiniCapSo(), "android-" + sdk + File.separator + abi + File.separator + MINICAP_SO);
@@ -110,7 +111,9 @@ public class MiniCapUtil implements ScreenSubject {
         return cor.getOutput();
     }
 
-    public void startScreenListener() {
+    public void startScreenListener(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
         isRunning = true;
         Thread frame = new Thread(new ImageBinaryFrameCollector());
         frame.start();
@@ -180,7 +183,7 @@ public class MiniCapUtil implements ScreenSubject {
             try {
 
                 final String startCommand = String.format(
-                        MINICAP_START_COMMAND, size, size);
+                        MINICAP_START_COMMAND, size, screenWidth + "x" + screenHeight);
                 // 启动minicap服务
                 new Thread(new Runnable() {
                     public void run() {

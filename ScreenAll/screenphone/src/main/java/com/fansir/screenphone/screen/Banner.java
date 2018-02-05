@@ -15,6 +15,10 @@ public class Banner {
     private int virtualHeight;
     private int orientation;
     private int quirks;
+    private int maxX;
+    private int maxY;
+    private int maxPoint;
+    private int maxPress;
 
     @Override
     public String toString() {
@@ -28,7 +32,43 @@ public class Banner {
                 ", virtualHeight=" + virtualHeight +
                 ", orientation=" + orientation +
                 ", quirks=" + quirks +
+                ", maxX=" + maxX +
+                ", maxY=" + maxY +
+                ", maxPoint=" + maxPoint +
+                ", maxPress=" + maxPress +
                 '}';
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public void setMaxX(int maxX) {
+        this.maxX = maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(int maxY) {
+        this.maxY = maxY;
+    }
+
+    public int getMaxPoint() {
+        return maxPoint;
+    }
+
+    public void setMaxPoint(int maxPoint) {
+        this.maxPoint = maxPoint;
+    }
+
+    public int getMaxPress() {
+        return maxPress;
+    }
+
+    public void setMaxPress(int maxPress) {
+        this.maxPress = maxPress;
     }
 
     public int getVersion() {
@@ -102,4 +142,5 @@ public class Banner {
     public void setQuirks(int quirks) {
         this.quirks = quirks;
     }
+
 }

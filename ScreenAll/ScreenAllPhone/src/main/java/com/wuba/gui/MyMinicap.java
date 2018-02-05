@@ -130,7 +130,7 @@ public class MyMinicap {
             p.add(jb3);
             jb3.setBounds(3 * phoneW / 4, phoneH + 20, phoneW / 4, 40);
 
-            OperateAndroid oa = new OperateAndroid(device);
+            OperateAndroid oa = new OperateAndroid(device, 12345 + i);
             list.add(oa);
 
             addListen(device, mp, 12345, oa);
@@ -192,7 +192,7 @@ public class MyMinicap {
             p.add(jb3);
             jb3.setBounds(3 * phoneW / 4, phoneH + 20, phoneW / 4, 40);
 
-            OperateAndroid oa = new OperateAndroid(device);
+            OperateAndroid oa = new OperateAndroid(device, 12345 + i);
             list.add(oa);
 
             addListen(device, mp, 12346, oa);
@@ -484,19 +484,19 @@ public class MyMinicap {
     class MyPanel extends JPanel implements AndroidScreenObserver {
         MiniCapUtil minicap = null;
         BufferedImage bi, bi1 = null;
-        int x, y, w, h;
-        IDevice d;
+//        int x, y, w, h;
+//        IDevice d;
 
         public MyPanel(IDevice device, int x, int y, int w, int h, int p) {
             minicap = new MiniCapUtil(device, p);
             minicap.registerObserver(this);
-            minicap.startScreenListener();
+            minicap.startScreenListener(phoneW, phoneH);
 
-            d = device;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
+//            d = device;
+//            this.x = x;
+//            this.y = y;
+//            this.w = w;
+//            this.h = h;
         }
 
         @Override

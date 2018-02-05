@@ -27,10 +27,14 @@ import javax.imageio.ImageIO;
 
 public class ScreenUtil implements ScreenSubject {
 
+    private String MINITOUCH_FILE = "minitouch";
+    private String MINITOUCH_START_COMMAND = "/data/local/tmp/%s";
+
     private String REMOTE_PATH = "/data/local/tmp"; //手机存放文件目录
     private String CPU_COMMAND = "ro.product.cpu.abi"; //手机存放文件目录
     private String SDK_COMMAND = "ro.build.version.sdk"; //手机存放文件目录
     private String SCREEN_BIN = "minicap"; //手机存放文件目录
+    private String SCREENTOUCH_BIN = "minitouch"; //手机存放文件目录
     private String SCREEN_SO = "minicap.so"; //手机存放文件目录
     private String SCREEN_CHMOD_COMMAND = "chmod 777 %s/%s"; //改变文件权限
     private String SCREEN_SIZE_COMMAND = "wm size";
@@ -72,13 +76,18 @@ public class ScreenUtil implements ScreenSubject {
         }
         //创建本地必须文件对象
         File scBin = new File(ConstantTool.getScreenBin(), cpu + File.separator + SCREEN_BIN);
+        File scTouchBin = new File(ConstantTool.getScreenTouchBin(), cpu + File.separator + SCREENTOUCH_BIN);
         File scSo = new File(ConstantTool.getScreenSo(), "android-" + sdk + File.separator + cpu + File.separator + SCREEN_SO);
         try {
             //拷贝必要文件到手机根目录
             device.pushFile(scBin.getAbsolutePath(), REMOTE_PATH + "/" + SCREEN_BIN);
+            device.pushFile(scTouchBin.getAbsolutePath(), REMOTE_PATH + "/" + SCREENTOUCH_BIN);
             device.pushFile(scSo.getAbsolutePath(), REMOTE_PATH + "/" + SCREEN_SO);
+            //chmod 777  data/local/tmp
             executeShell(String.format(SCREEN_CHMOD_COMMAND, REMOTE_PATH, SCREEN_BIN));
+            executeShell(String.format(SCREEN_CHMOD_COMMAND, REMOTE_PATH, SCREENTOUCH_BIN));
             //端口转发
+            device.createForward(1111, "minitouch", IDevice.DeviceUnixSocketNamespace.ABSTRACT);
             device.createForward(portNum, "minicap", IDevice.DeviceUnixSocketNamespace.ABSTRACT);
             //获取屏幕尺寸
             String out = executeShell(SCREEN_SIZE_COMMAND);
@@ -127,6 +136,8 @@ public class ScreenUtil implements ScreenSubject {
         frame.start();
         Thread convert = new Thread(new ImageConverter());
         convert.start();
+        Thread touch = new Thread(new TouchThread());
+        touch.start();
     }
 
     public void stopScreenListener() {
@@ -334,6 +345,15 @@ public class ScreenUtil implements ScreenSubject {
                 System.out.println("image信息=" + banner.toString());
             }
             return cursor;
+        }
+    }
+
+    class TouchThread implements Runnable {
+        @Override
+        public void run() {
+            String startCmd = String.format(MINITOUCH_START_COMMAND, MINITOUCH_FILE);
+            System.out.println(startCmd);
+            executeShell(startCmd);
         }
     }
 

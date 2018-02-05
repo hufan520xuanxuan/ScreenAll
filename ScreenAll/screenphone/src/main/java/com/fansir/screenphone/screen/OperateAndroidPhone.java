@@ -6,8 +6,6 @@ import com.android.chimpchat.core.TouchPressType;
 import com.android.ddmlib.IDevice;
 import com.fansir.screenphone.devices.AdbChimpTest;
 
-import java.io.IOException;
-
 /**
  * 电脑对安卓手机进行操作
  * Created by FanSir on 2018-01-30.
@@ -55,7 +53,7 @@ public class OperateAndroidPhone {
     public void touchMove(int x, int y) {
         try {
             manager.touchMove(x, y);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

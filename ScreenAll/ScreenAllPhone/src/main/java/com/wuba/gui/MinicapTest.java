@@ -219,7 +219,7 @@ public class MinicapTest extends JFrame {
         public MyPanel(IDevice device, MinicapTest frame) {
             minicap = new MiniCapUtil(device, 11111);
             minicap.registerObserver(this);
-            minicap.startScreenListener();
+            minicap.startScreenListener(width, height);
 
 
         }

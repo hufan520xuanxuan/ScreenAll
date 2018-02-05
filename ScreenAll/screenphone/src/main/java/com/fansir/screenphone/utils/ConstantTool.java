@@ -23,4 +23,8 @@ public class ConstantTool {
         return new File(ROOT, "screenphone/screen/shared");
     }
 
+    public static File getScreenTouchBin() {
+        return new File(ROOT, "screenphone/screentouch");
+    }
+
 }

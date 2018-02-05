@@ -4,6 +4,7 @@ package com.fansir.screenphone.gui;
 import com.android.ddmlib.IDevice;
 import com.fansir.screenphone.devices.AdbTools;
 import com.fansir.screenphone.screen.AndroidScreenObserver;
+import com.fansir.screenphone.screen.Banner;
 import com.fansir.screenphone.screen.OperateAndroidPhone;
 import com.fansir.screenphone.screen.ScreenUtil;
 
@@ -11,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,12 +26,18 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 /**
@@ -37,14 +45,18 @@ import javax.swing.WindowConstants;
  */
 
 public class OnePhoneFrame extends JFrame {
-    private int width = 720 / 2; //720
-    private int height = 1280 / 2; //1280
+    private int screenWidth = 720 / 2; //720
+    private int screenHeight = 1280 / 2; //1280
+    private int rowNum = 5; //排
+    private int lineNum = 6; //列
     private int realWidth; //手机真实宽度
     private int realHeight; //手机真是高度
+    private Banner banner = new Banner();
 
     ScreenUtil screenUtil = null;
-    private OperateAndroidPhone oaPhone;
     private AdbTools adbTools;
+    private JPanel jPanelScreenMenu;
+    private OutputStream outputStream;
 
     public static void main(String[] args) {
         new OnePhoneFrame();
@@ -53,35 +65,63 @@ public class OnePhoneFrame extends JFrame {
     public OnePhoneFrame() {
 
         initMainFrame();
+        initDeviceList();
 
+        this.setVisible(true);
+    }
+
+    private void initDeviceList() {
         adbTools = new AdbTools();
         while (adbTools.getDevicesList().length <= 0) { //循环获取当前连接设备信息
             System.out.println("adbLength=" + adbTools.getDevicesList().length);
         }
 
+
         for (int i = 0; i < adbTools.getDevicesList().length; i++) {
-            int port = 12345 + i;
             IDevice device = adbTools.getDevicesList()[i];
-            initScreenPanel(device, port, i);
-            oaPhone = new OperateAndroidPhone(device, port); //创建操作android手机对象
+
+
+            JPanel jPanelScreen = new JPanel(null);
+            jPanelScreenMenu.add(jPanelScreen);
+            System.out.println((i % rowNum) * (screenWidth) + "--" + (i / lineNum) * (screenHeight + 20));
+            jPanelScreen.setBounds((i % rowNum) * (screenWidth), (i / lineNum) * (screenHeight + 20), screenWidth, screenHeight + 20);
+
+            JTextArea jTextArea = new JTextArea("1hao");
+            jPanelScreen.add(jTextArea);
+            jTextArea.setBounds(0, 0, screenWidth, 20);
+
+            ScreenPanel screenPanel = new ScreenPanel(device, 12345 + i, i);
+            jPanelScreen.add(screenPanel);
+            screenPanel.setBounds(0, 20, screenWidth, screenHeight);
+
+//            OperateAndroidPhone oaPhone = new OperateAndroidPhone(device, 12345 + i); //创建操作android手机对象
+//            addMenuBar(oaPhone); //添加菜单栏
+            setPanelMouseListener(jPanelScreen);
+
         }
-        addMenuBar(); //添加菜单栏
-        this.setVisible(true);
     }
 
     private void initMainFrame() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); //获取电脑屏幕尺寸
-        this.setBounds(0, 0, dim.width, dim.height);
+        setBounds(0, 0, dim.width, dim.height);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //点击关闭直接关闭进程操作
+        setLayout(null);
+
+//        JCheckBox jcb = new JCheckBox("----ALL----");
+//        getContentPane().add(jcb);
+//        jcb.setBounds(screenWidth - 200, 0, 200, 20);
+
+        jPanelScreenMenu = new JPanel(null);
+        JScrollPane jScrollPane = new JScrollPane(jPanelScreenMenu);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane.setSize(dim.width - 200, dim.height - 80);
+        getContentPane().add(jScrollPane);
+        jPanelScreenMenu.setBounds(0, 0, dim.width - 200, dim.height - 80);
+        jPanelScreenMenu.setPreferredSize(new Dimension(dim.width - 200, dim.height + 1000));
     }
 
-    private void initScreenPanel(IDevice device, int port, int index) {
-        ScreenPanel screenPanel = new ScreenPanel(device, port, index);
-        this.getContentPane().add(screenPanel);
-        setPanelMouseListener(screenPanel);
-    }
-
-    private void addMenuBar() {
+    private void addMenuBar(OperateAndroidPhone oaPhone) {
         //添加菜单栏
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("basic");
@@ -173,9 +213,9 @@ public class OnePhoneFrame extends JFrame {
     private void reStartScreenPanel(double ratio) {
         screenUtil.stopScreenListener();
         screenUtil.killProcess("minicap");
-        width = (int) (realWidth * ratio);
-        height = (int) (realHeight * ratio);
-        screenUtil.startScreenListener(width, height);
+        screenWidth = (int) (realWidth * ratio);
+        screenHeight = (int) (realHeight * ratio);
+        screenUtil.startScreenListener(screenWidth, screenHeight);
     }
 
     /**
@@ -195,41 +235,41 @@ public class OnePhoneFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                int keyCode = keyEvent.getKeyCode();
-                switch (keyCode) {
-                    case KeyEvent.VK_BACK_SPACE:
-                        oaPhone.press("KEYCODE_DEL");
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        oaPhone.press("KEYCODE_SPACE");
-                        break;
-                    case KeyEvent.VK_DELETE:
-                        oaPhone.press("KEYCODE_FORWARD_DEL");
-                        break;
-                    case KeyEvent.VK_UP:
-                        oaPhone.press("KEYCODE_DPAD_UP");
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        oaPhone.press("KEYCODE_DPAD_DOWN");
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        oaPhone.press("KEYCODE_DPAD_LEFT");
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        oaPhone.press("KEYCODE_DPAD_RIGHT");
-                        break;
-                    case KeyEvent.VK_ENTER:
-                        oaPhone.press("KEYCODE_ENTER");
-                        break;
-                    case KeyEvent.VK_CONTROL:
-                        break;
-                    case KeyEvent.VK_ALT:
-                        break;
-                    case KeyEvent.VK_SHIFT:
-                        break;
-                    default:
-                        oaPhone.type(keyEvent.getKeyChar());
-                }
+//                int keyCode = keyEvent.getKeyCode();
+//                switch (keyCode) {
+//                    case KeyEvent.VK_BACK_SPACE:
+//                        oaPhone.press("KEYCODE_DEL");
+//                        break;
+//                    case KeyEvent.VK_SPACE:
+//                        oaPhone.press("KEYCODE_SPACE");
+//                        break;
+//                    case KeyEvent.VK_DELETE:
+//                        oaPhone.press("KEYCODE_FORWARD_DEL");
+//                        break;
+//                    case KeyEvent.VK_UP:
+//                        oaPhone.press("KEYCODE_DPAD_UP");
+//                        break;
+//                    case KeyEvent.VK_DOWN:
+//                        oaPhone.press("KEYCODE_DPAD_DOWN");
+//                        break;
+//                    case KeyEvent.VK_LEFT:
+//                        oaPhone.press("KEYCODE_DPAD_LEFT");
+//                        break;
+//                    case KeyEvent.VK_RIGHT:
+//                        oaPhone.press("KEYCODE_DPAD_RIGHT");
+//                        break;
+//                    case KeyEvent.VK_ENTER:
+//                        oaPhone.press("KEYCODE_ENTER");
+//                        break;
+//                    case KeyEvent.VK_CONTROL:
+//                        break;
+//                    case KeyEvent.VK_ALT:
+//                        break;
+//                    case KeyEvent.VK_SHIFT:
+//                        break;
+//                    default:
+//                        oaPhone.type(keyEvent.getKeyChar());
+//                }
             }
 
             @Override
@@ -243,7 +283,6 @@ public class OnePhoneFrame extends JFrame {
             public void windowClosing(WindowEvent windowEvent) {
                 super.windowClosing(windowEvent);
                 screenUtil.windowClose();
-                oaPhone.disPose();
             }
         });
 
@@ -255,16 +294,24 @@ public class OnePhoneFrame extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
+                Point point = pointConvert(mouseEvent.getPoint());
+                if (outputStream != null) {
+                    String command = String.format("d 0 %s %s 50\n", (int) point.getX(), (int) point.getY());
+                    executeTouch(command);
+                }
 //                screenUtil.exeShellQuickly("touch down " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
 //                screenUtil.exeShellQuickly("input tap " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
-                oaPhone.touchDown((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
+//                oaPhone.touchDown((mouseEvent.getX() * realWidth / screenWidth), (mouseEvent.getY() * realHeight / screenHeight));
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
 //                screenUtil.exeShellQuickly("touch up " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
 //                screenUtil.exeShellQuickly("input tap " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
-                oaPhone.touchUp((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
+                if (outputStream != null) {
+                    String command = "u 0\n";
+                    executeTouch(command);
+                }
             }
 
             @Override
@@ -281,9 +328,14 @@ public class OnePhoneFrame extends JFrame {
         panel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
+                Point point = pointConvert(mouseEvent.getPoint());
+                if (outputStream != null) {
+                    String command = String.format("m 0 %s %s 50\n", (int) point.getX(), (int) point.getY());
+                    executeTouch(command);
+                }
 //                screenUtil.exeShellQuickly("touch move " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
 //                screenUtil.exeShellQuickly("input swipe " + (mouseEvent.getX() * realWidth / width) + " " + (mouseEvent.getY() * realHeight / height));
-                oaPhone.touchMove((mouseEvent.getX() * realWidth / width), (mouseEvent.getY() * realHeight / height));
+//                oaPhone.touchMove((mouseEvent.getX() * realWidth / screenWidth), (mouseEvent.getY() * realHeight / screenHeight));
             }
 
             @Override
@@ -295,13 +347,33 @@ public class OnePhoneFrame extends JFrame {
         panel.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-                if (mouseWheelEvent.getWheelRotation() == 1) {
-                    oaPhone.press("KEYCODE_DPAD_DOWN");
-                } else if (mouseWheelEvent.getPreciseWheelRotation() == -1) {
-                    oaPhone.press("KEYCODE_DPAD_UP");
-                }
+//                if (mouseWheelEvent.getWheelRotation() == 1) {
+//                    oaPhone.press("KEYCODE_DPAD_DOWN");
+//                } else if (mouseWheelEvent.getPreciseWheelRotation() == -1) {
+//                    oaPhone.press("KEYCODE_DPAD_UP");
+//                }
             }
         });
+    }
+
+    private Point pointConvert(Point point) {
+        Point realpoint = new Point((int) ((point.getX() * 1.0 / screenWidth) * banner.getMaxX()), (int) ((point.getY() * 1.0 / screenHeight) * banner.getMaxY()));
+        return realpoint;
+    }
+
+    private void executeTouch(String command) {
+        if (outputStream != null) {
+            try {
+                System.out.println("command" + command);
+                outputStream.write(command.getBytes());
+                outputStream.flush();
+                String endCommand = "c\n";
+                outputStream.write(endCommand.getBytes());
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -314,9 +386,52 @@ public class OnePhoneFrame extends JFrame {
         //构造方法
         public ScreenPanel(IDevice iDevice, int port, int index) {
             this.index = index;
-            screenUtil = new ScreenUtil(iDevice, port + 1);
+            screenUtil = new ScreenUtil(iDevice, port + index);
             screenUtil.registerObserver(this);
-            screenUtil.startScreenListener(width, height);
+            screenUtil.startScreenListener(screenWidth, screenHeight);
+
+            try {
+                Thread.sleep(4 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                Socket socket = new Socket("localhost", 1111);
+                InputStream stream = socket.getInputStream();
+                outputStream = socket.getOutputStream();
+                int len = 4096;
+                byte[] buffer;
+                buffer = new byte[len];
+                int realLen = stream.read(buffer);
+                if (buffer.length != realLen) {
+                    buffer = subByteArray(buffer, 0, realLen);
+                }
+                String result = new String(buffer);
+                String[] array = result.split("|\n");
+                banner.setVersion(1);
+                banner.setMaxPoint(10);
+                banner.setMaxPress(0);
+                banner.setMaxX(720);
+                banner.setMaxY(1280);
+//                banner.setVersion(Integer.parseInt(array[1]));
+//                banner.setMaxPoint(Integer.parseInt(array[3]));
+//                banner.setMaxPress(Integer.parseInt(array[6]));
+//                banner.setMaxX(Integer.parseInt(array[4]));
+//                banner.setMaxY(Integer.parseInt(array[5]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private byte[] subByteArray(byte[] byte1, int start, int end) {
+            byte[] byte2 = new byte[0];
+            try {
+                byte2 = new byte[end - start];
+            } catch (NegativeArraySizeException e) {
+                e.printStackTrace();
+            }
+            System.arraycopy(byte1, start, byte2, 0, end - start);
+            return byte2;
         }
 
         @Override
@@ -332,8 +447,8 @@ public class OnePhoneFrame extends JFrame {
             }
             //因为frame边界也是有尺寸的 所以重新绘制时需要加上frame的边界
 //            setSize(width + 15, height + 60);
-            graphics.drawImage(bufferedImage, 0, 0, width, height, null);
-            this.setBounds(0, (index * height) + 20, width, height);
+            graphics.drawImage(bufferedImage, 0, 0, screenWidth, screenHeight, null);
+//            this.setBounds(0, 0, screenWidth, screenHeight);
             bufferedImage.flush();
         }
     }
