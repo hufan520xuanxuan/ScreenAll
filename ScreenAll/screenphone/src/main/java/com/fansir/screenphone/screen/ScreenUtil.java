@@ -46,13 +46,15 @@ public class ScreenUtil implements ScreenSubject {
     private boolean isRunning = false;
 
     private static IDevice device;
+    private int index;
     private int portNum;
     private String size;
     private Socket socket;
     int screenWidth; //要显示的屏幕宽度
     int screenHeight; //要显示的屏幕高度
 
-    public ScreenUtil(IDevice d, int p) {
+    public ScreenUtil(IDevice d, int p, int index) {
+        this.index = index;
         device = d;
         portNum = p;
         initParam();
@@ -87,7 +89,7 @@ public class ScreenUtil implements ScreenSubject {
             executeShell(String.format(SCREEN_CHMOD_COMMAND, REMOTE_PATH, SCREEN_BIN));
             executeShell(String.format(SCREEN_CHMOD_COMMAND, REMOTE_PATH, SCREENTOUCH_BIN));
             //端口转发
-            device.createForward(1111, "minitouch", IDevice.DeviceUnixSocketNamespace.ABSTRACT);
+            device.createForward(1111 + index, "minitouch", IDevice.DeviceUnixSocketNamespace.ABSTRACT);
             device.createForward(portNum, "minicap", IDevice.DeviceUnixSocketNamespace.ABSTRACT);
             //获取屏幕尺寸
             String out = executeShell(SCREEN_SIZE_COMMAND);
@@ -142,23 +144,6 @@ public class ScreenUtil implements ScreenSubject {
 
     public void stopScreenListener() {
         isRunning = false;
-    }
-
-    /**
-     * 当窗口关闭时 需要关闭的操作
-     */
-    public void windowClose() {
-        killProcess("minicap");
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (device != null) {
-            device = null;
-        }
     }
 
     /**
@@ -348,6 +333,9 @@ public class ScreenUtil implements ScreenSubject {
         }
     }
 
+    /**
+     * 初始化手机触摸操作的线程
+     */
     class TouchThread implements Runnable {
         @Override
         public void run() {
@@ -444,19 +432,6 @@ public class ScreenUtil implements ScreenSubject {
             dest = m.replaceAll("");
         }
         return dest;
-    }
-
-    /**
-     * 结束android后台运行的某个进程
-     */
-    public void killProcess(String name) {
-        String psGrep = executeShell("ps |grep " + name);
-        String pidFour = psGrep.substring(5, 9);
-        String resultFour = executeShell("kill " + pidFour);
-        if (!resultFour.equals("")) { //没有成功停止了
-            String pidFive = psGrep.substring(5, 10);
-            executeShell("kill " + pidFive);
-        }
     }
 
 }
