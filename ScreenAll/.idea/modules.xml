@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/ScreenAll.iml" filepath="$PROJECT_DIR$/ScreenAll.iml" />
       <module fileurl="file://$PROJECT_DIR$/ScreenAllPhone/ScreenAllPhone.iml" filepath="$PROJECT_DIR$/ScreenAllPhone/ScreenAllPhone.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/controlapplication/controlapplication.iml" filepath="$PROJECT_DIR$/controlapplication/controlapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/screenphone/screenphone.iml" filepath="$PROJECT_DIR$/screenphone/screenphone.iml" />
     </modules>
   </component>

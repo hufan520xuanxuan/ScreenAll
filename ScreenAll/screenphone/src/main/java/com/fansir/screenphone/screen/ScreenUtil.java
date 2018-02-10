@@ -2,7 +2,6 @@ package com.fansir.screenphone.screen;
 
 import com.android.ddmlib.CollectingOutputReceiver;
 import com.android.ddmlib.IDevice;
-import com.fansir.screenphone.utils.ConstantTool;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -77,9 +76,13 @@ public class ScreenUtil implements ScreenSubject {
             sdk = "23";
         }
         //创建本地必须文件对象
-        File scBin = new File(ConstantTool.getScreenBin(), cpu + File.separator + SCREEN_BIN);
-        File scTouchBin = new File(ConstantTool.getScreenTouchBin(), cpu + File.separator + SCREENTOUCH_BIN);
-        File scSo = new File(ConstantTool.getScreenSo(), "android-" + sdk + File.separator + cpu + File.separator + SCREEN_SO);
+//        File scBin = new File(ConstantTool.getScreenBin(), cpu + File.separator + SCREEN_BIN);
+//        File scTouchBin = new File(ConstantTool.getScreenTouchBin(), cpu + File.separator + SCREENTOUCH_BIN);
+//        File scSo = new File(ConstantTool.getScreenSo(), "android-" + sdk + File.separator + cpu + File.separator + SCREEN_SO);
+        File scBin = new File("C:\\Users\\Administrator\\Desktop\\ScreenAll\\screen\\bin", cpu + File.separator + SCREEN_BIN);
+        File scTouchBin = new File("C:\\Users\\Administrator\\Desktop\\ScreenAll\\screentouch", cpu + File.separator + SCREENTOUCH_BIN);
+        File scSo = new File("C:\\Users\\Administrator\\Desktop\\ScreenAll\\screen\\shared", "android-" + sdk + File.separator + cpu + File.separator + SCREEN_SO);
+
         try {
             //拷贝必要文件到手机根目录
             device.pushFile(scBin.getAbsolutePath(), REMOTE_PATH + "/" + SCREEN_BIN);

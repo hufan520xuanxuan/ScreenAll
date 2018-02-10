@@ -24,9 +24,24 @@ dependencies {
     compile 'org.testng:testng:6.8.13'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'com.android.tools.ddms:ddmlib:24.2.3'
-    compile files('libs/rt.jar')
-    compile files('libs/java-client-3.1.0.jar')
-    compile files('libs/selenium-server-standalone-3.8.1.jar')
     compile files('libs/chimpchat.jar')
-    compile files('libs/monkeyrunner.jar')
+    compile files('libs/rt.jar')
+}
+
+jar {
+    archiveName = "screen_all.jar"
+    destinationDir = file(".")
+
+    from {
+        configurations.runtime.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    manifest {
+        attributes 'Main-Class': 'com.fansir.screenphone.gui.OnePhoneFrame'
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }

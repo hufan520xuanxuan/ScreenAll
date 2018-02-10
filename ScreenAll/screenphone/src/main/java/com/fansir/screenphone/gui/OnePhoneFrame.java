@@ -5,11 +5,9 @@ import com.android.ddmlib.IDevice;
 import com.fansir.screenphone.devices.AdbTools;
 import com.fansir.screenphone.screen.AndroidScreenObserver;
 import com.fansir.screenphone.screen.Banner;
-import com.fansir.screenphone.screen.OperateAndroidPhone;
 import com.fansir.screenphone.screen.ScreenUtil;
 import com.fansir.screenphone.touch.TouchUtil;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -25,18 +23,23 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
+
+import sun.misc.BASE64Encoder;
 
 /**
  * Created by FanSir on 2018-01-26.
@@ -56,6 +59,8 @@ public class OnePhoneFrame extends JFrame {
     private AdbTools adbTools;
     private JPanel jPanelScreenMenu;
     private JCheckBox jcb;
+    private JButton jb, jb1;
+    private JFileChooser jFileChooser;
 
     public static void main(String[] args) {
         new OnePhoneFrame();
@@ -78,7 +83,7 @@ public class OnePhoneFrame extends JFrame {
             JPanel jPanelScreen = new JPanel(null);
             jPanelScreenMenu.add(jPanelScreen);
             System.out.println((i % rowNum) * (screenWidth) + "--" + (i / lineNum) * (screenHeight + 20));
-            jPanelScreen.setBounds((i % rowNum) * (screenWidth), (i / lineNum) * (screenHeight + 20), screenWidth, screenHeight + 20);
+            jPanelScreen.setBounds((i % rowNum) * (screenWidth), ((i / lineNum) * (screenHeight + 20)) + 20, screenWidth, screenHeight + 20);
 
             JTextArea jTextArea = new JTextArea(i + "hao");
             jPanelScreen.add(jTextArea);
@@ -90,6 +95,7 @@ public class OnePhoneFrame extends JFrame {
 
             TouchUtil touchUtil = new TouchUtil(i);
             touchList.add(touchUtil);
+            addMenuBar(touchUtil, screenUtil);
             setPanelMouseListener(jPanelScreen, touchUtil);
 
         }
@@ -100,10 +106,16 @@ public class OnePhoneFrame extends JFrame {
         setBounds(0, 0, dim.width, dim.height);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //点击关闭直接关闭进程操作
         setLayout(null);
+        ImageIcon imageIcon = new ImageIcon("screenphone/src/main/res/drawable/icon.png");
+        setIconImage(imageIcon.getImage());
 
         jcb = new JCheckBox("----ALL----");
         getContentPane().add(jcb);
         jcb.setBounds(dim.width - 200, 0, 200, 20);
+
+        jb = new JButton("start");
+        getContentPane().add(jb);
+        jb.setBounds(dim.width - 200, 30, 200, 20);
 
         jPanelScreenMenu = new JPanel(null);
         JScrollPane jScrollPane = new JScrollPane(jPanelScreenMenu);
@@ -115,57 +127,15 @@ public class OnePhoneFrame extends JFrame {
         jPanelScreenMenu.setPreferredSize(new Dimension(dim.width - 200, dim.height + 1000));
     }
 
-    private void addMenuBar(OperateAndroidPhone oaPhone) {
-        //添加菜单栏
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("basic");
-        JMenuItem menuItem1 = new JMenuItem("lock");
-        JMenuItem menuItem2 = new JMenuItem("unlock");
-        JMenuItem menuItem3 = new JMenuItem("home");
-        JMenuItem menuItem4 = new JMenuItem("back");
-        JMenuItem menuItem5 = new JMenuItem("menu");
-        JMenuItem menuItem6 = new JMenuItem("restart");
-        JMenuItem menuItem7 = new JMenuItem("shutdown");
-        JMenuItem menuItem8 = new JMenuItem("volAdd");
-        JMenuItem menuItem9 = new JMenuItem("volMinus");
+    private void addMenuBar(TouchUtil touchUtil, ScreenUtil screenUtil) {
 
-        menuBar.add(menu);
-        menu.add(menuItem1);
-        menu.add(menuItem2);
-        menu.add(menuItem3);
-        menu.add(menuItem4);
-        menu.add(menuItem5);
-        menu.add(menuItem6);
-        menu.add(menuItem7);
-        menu.add(menuItem8);
-        menu.add(menuItem9);
-
-        JMenu menu1 = new JMenu("zoom");
-        JMenuItem menuItem11 = new JMenuItem("100%");
-        JMenuItem menuItem12 = new JMenuItem("80%");
-        JMenuItem menuItem13 = new JMenuItem("60%");
-        JMenuItem menuItem14 = new JMenuItem("40%");
-        JMenuItem menuItem15 = new JMenuItem("20%");
-        menuBar.add(menu1);
-        menu1.add(menuItem11);
-        menu1.add(menuItem12);
-        menu1.add(menuItem13);
-        menu1.add(menuItem14);
-        menu1.add(menuItem15);
-
-        add(menuBar, BorderLayout.NORTH);
-
-        menuItem1.addActionListener(new ActionListener() {
+        jb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                oaPhone.press(OperateAndroidPhone.POWER);
+                new SendMsgFrame(screenUtil);
             }
         });
-        menuItem2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-            }
-        });
+
     }
 
     /**
@@ -297,6 +267,22 @@ public class OnePhoneFrame extends JFrame {
     private Point pointConvert(Point point) {
         Point realpoint = new Point((int) ((point.getX() * 1.0 / screenWidth) * banner.getMaxX()), (int) ((point.getY() * 1.0 / screenHeight) * banner.getMaxY()));
         return realpoint;
+    }
+
+    public static String getImageStr(String imgFile) {
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(imgFile);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 加密
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
     }
 
     /**

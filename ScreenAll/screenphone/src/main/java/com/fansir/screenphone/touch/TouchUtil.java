@@ -42,7 +42,7 @@ public class TouchUtil {
         }
     }
 
-    private void executeTouch(String command) {
+    public void executeTouch(String command) {
         if (outputStream != null) {
             try {
                 System.out.println("command" + command);

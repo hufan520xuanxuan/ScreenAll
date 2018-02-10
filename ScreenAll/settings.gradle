@@ -1,1 +1,1 @@
-include ':app', ':ScreenAllPhone', ':screenphone'
+include ':app', ':ScreenAllPhone', ':screenphone', ':controlapplication'
